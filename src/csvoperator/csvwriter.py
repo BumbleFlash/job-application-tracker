@@ -1,14 +1,18 @@
 import csv
 from src.csvoperator.csvutils import CsvUtils
+from src.os.osutils import OsUtils
 
 
 class CsvWriter:
 
     @staticmethod
     def write_few(messages, limit):
-        with open('data/first_' + str(limit) + '_emails.csv', 'w', newline='', encoding='utf-8') as csvfile:
+
+        OsUtils.create_directory_if_not_exists("data")
+
+        with open('data/first_' + str(limit) + '_emails.csv', 'w', newline='', encoding='utf-8') as csvFile:
             headers = ['Sender', 'Sender_Email', 'Subject', 'Body', 'Time']
-            writer = csv.DictWriter(csvfile, fieldnames=headers)
+            writer = csv.DictWriter(csvFile, fieldnames=headers)
             writer.writeheader()
             count = 1
             for message in messages:
