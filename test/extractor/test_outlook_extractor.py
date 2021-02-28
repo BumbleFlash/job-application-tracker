@@ -1,5 +1,3 @@
-import pytest
-
 from src.extractor.outlook_extractor import OutlookExtractor
 
 
