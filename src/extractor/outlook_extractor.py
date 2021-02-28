@@ -1,6 +1,5 @@
 import win32com.client
 from src.constants import email_constants
-from src.csvoperator.csvwriter import CsvWriter
 
 
 class OutlookExtractor(object):
@@ -15,4 +14,4 @@ class OutlookExtractor(object):
         inbox = outlook.GetDefaultFolder(email_constants.INBOX_FOLDER)
         messages = inbox.Items
         messages.Sort("[ReceivedTime]", True)
-        CsvWriter.write_few(messages, 200)
+        return messages
