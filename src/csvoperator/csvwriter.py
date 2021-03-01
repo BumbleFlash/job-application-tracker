@@ -1,4 +1,5 @@
 import csv
+
 from src.csvoperator.csvutils import CsvUtils
 from src.os.osutils import OsUtils
 
@@ -19,7 +20,7 @@ class CsvWriter:
                 if count == limit:
                     break
                 data = {'Sender': message.SenderName, 'Sender_Email': message.SenderEmailAddress,
-                        'Subject': message.Subject, 'Body': CsvUtils.remove_links(message.Body),
+                        'Subject': message.Subject, 'Body': CsvUtils.clean_msg_body(message.Body),
                         'Time': message.ReceivedTime}
                 print(data)
                 count += 1
