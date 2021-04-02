@@ -1,5 +1,7 @@
-from src.csvoperator.csvwriter import CsvWriter
 from src.extractor.outlook_extractor import OutlookExtractor
+from src.processor.tfidfprocessor import TfIdfProcessor
 
 extractor = OutlookExtractor()
-CsvWriter.write_few(extractor.extract_data(), 200)
+# messages = extractor.extract_data()
+# CsvWriter.write_few(messages, 200)
+TfIdfProcessor(1).process()
