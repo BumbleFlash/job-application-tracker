@@ -1,9 +1,11 @@
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+
 from src.processor.processorutils import ProcessorUtils
 
 
 class TfIdfProcessor:
     limit = 0
-    sampleBody = "<  Hi Sudarshan,Thanks for applying to Amazon! We've received your application for the position of " \
+    sampleBody = "< Software Engineer Hi Sudarshan,Thanks for applying to Amazon! We've received your application for the position of " \
                  "Software Dev Engineer, Amazon Halo <  (ID: 1399549).What happens next?If we decide to move forward " \
                  "with your application, the Amazon recruiting team will reach out to you to discuss next steps. Any " \
                  "updates to your application status will be reflected on your Application dashboard < , so be sure " \
@@ -23,4 +25,17 @@ class TfIdfProcessor:
         # for msg in messages:
         #     if count == self.limit:
         #         break
-        print(ProcessorUtils.pre_process(self.sampleBody))
+        pre_processed_body = ProcessorUtils.pre_process(self.sampleBody)
+        stopwords = ProcessorUtils.get_stop_words("../resources/stopwords.txt")
+        cv = CountVectorizer(max_df=1, stop_words=stopwords)
+        word_count_vector = cv.fit_transform([pre_processed_body])
+
+        tfidf_transformer = TfidfTransformer(norm='l2', smooth_idf=True, sublinear_tf=False, use_idf=True)
+        tfidf_transformer.fit(word_count_vector)
+
+        feature_names = cv.get_feature_names()
+        tfidf_vector = tfidf_transformer.transform(cv.transform([pre_processed_body]))
+        sorted_items = ProcessorUtils.sort_coo(tfidf_vector.tocoo())
+        keywords = ProcessorUtils.extract_top_n_from_vector(feature_names, sorted_items, 50)
+        for k in keywords:
+            print(k, keywords[k])
